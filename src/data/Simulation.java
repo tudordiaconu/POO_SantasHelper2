@@ -1,6 +1,7 @@
 package data;
 
 import common.Constants;
+import enums.CityStrategyEnum;
 import enums.ElvesType;
 import michelaneous.AnnualChange;
 import michelaneous.Child;
@@ -13,6 +14,7 @@ import scorestrategy.ScoreStrategyFactory;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 public final class Simulation {
     private Simulation() {
@@ -20,7 +22,8 @@ public final class Simulation {
     }
 
     /** method that gives gifts to children from database */
-    public static void givingGifts(final Database database, final WriteDatabase writeDatabase) {
+    public static void givingGifts(final Database database, final WriteDatabase writeDatabase,
+                                   final CityStrategyEnum strategy) {
         ChildWriterList auxiliarList = new ChildWriterList();
 
         /* sorts the gifts by the price in order to get the cheapest one */
@@ -28,6 +31,31 @@ public final class Simulation {
                 .sorted(Comparator.comparingDouble(Gift::getPrice)).toList();
 
         database.setAgeCategories();
+
+        List<Child> children = new ArrayList<>();
+
+        switch (strategy) {
+            case default -> {
+                children = database.getChildren().stream()
+                        .sorted(Comparator.comparingInt(Child::getId)).toList();
+            }
+
+            case NICE_SCORE -> {
+                children = database.getChildren().stream()
+                        .sorted((c1, c2) -> {
+                            if (Objects.equals(c1.getNiceScore(), c2.getNiceScore())) {
+                                return c1.getId() - c2.getId();
+                            }
+
+                            return Double.compare(c2.getNiceScore(), c1.getNiceScore());
+                        }).toList();
+            }
+
+            case NICE_SCORE_CITY -> {
+                children = database.getChildren().stream()
+                        .sorted(Comparator.comparingInt(Child::getId)).toList();
+            }
+        }
 
         /* calculates the average score for each child, based on its age */
         for (Child child : database.getChildren()) {
@@ -38,13 +66,15 @@ public final class Simulation {
             }
         }
 
-        for (Child child : database.getChildren()) {
+        for (Child child : children) {
             child.calculateBudget(database);
             child.receiveGift(sortedGifts);
             if (child.getElf() == ElvesType.YELLOW) {
                 child.yellowElf(sortedGifts);
             }
+        }
 
+        for (Child child : database.getChildren()) {
             /* creates a new childwriter in order to print the child */
             auxiliarList.getChildren().add(new ChildWriter(child.getId(), child.getLastName(),
                     child.getFirstName(), child.getCity(), child.getAge(),
@@ -72,7 +102,7 @@ public final class Simulation {
         }
 
         /* shares gifts to the children */
-        Simulation.givingGifts(database, writeDatabase);
+        Simulation.givingGifts(database, writeDatabase, CityStrategyEnum.ID);
     }
 
     /** method that does the rounds following round zero */
@@ -113,10 +143,12 @@ public final class Simulation {
                 }
             }
 
+            CityStrategyEnum strategy = currentChange.getStrategy();
+
             /* updates Santa's budget */
             database.setSantaBudget(currentChange.getNewSantaBudget());
             /* shares gifts to the children */
-            Simulation.givingGifts(database, writeDatabase);
+            Simulation.givingGifts(database, writeDatabase, strategy);
         }
     }
 }

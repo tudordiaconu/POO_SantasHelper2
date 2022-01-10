@@ -430,9 +430,9 @@
         "price" : 35.0,
         "category" : "Books"
       }, {
-        "productName" : "Uno",
-        "price" : 10.0,
-        "category" : "Board Games"
+        "productName" : "Lego",
+        "price" : 30.0,
+        "category" : "Toys"
       } ]
     }, {
       "id" : 3,
@@ -479,10 +479,6 @@
         "price" : 30.0,
         "category" : "Toys"
       }, {
-        "productName" : "Harry Potter",
-        "price" : 35.0,
-        "category" : "Books"
-      }, {
         "productName" : "Dress",
         "price" : 45.0,
         "category" : "Clothes"
@@ -498,6 +494,10 @@
       "niceScoreHistory" : [ 10.0 ],
       "assignedBudget" : 224.5330157323288,
       "receivedGifts" : [ {
+        "productName" : "Harry Potter",
+        "price" : 35.0,
+        "category" : "Books"
+      }, {
         "productName" : "Lego",
         "price" : 30.0,
         "category" : "Toys"
@@ -505,6 +505,10 @@
         "productName" : "Dress",
         "price" : 45.0,
         "category" : "Clothes"
+      }, {
+        "productName" : "Uno",
+        "price" : 10.0,
+        "category" : "Board Games"
       }, {
         "productName" : "Headphones",
         "price" : 100.0,
@@ -523,10 +527,6 @@
       "niceScoreHistory" : [ 8.0, 9.0, 6.0, 6.0, 6.0 ],
       "assignedBudget" : 66.92504688890023,
       "receivedGifts" : [ {
-        "productName" : "Lego",
-        "price" : 30.0,
-        "category" : "Toys"
-      }, {
         "productName" : "Monopoly",
         "price" : 30.0,
         "category" : "Board Games"
