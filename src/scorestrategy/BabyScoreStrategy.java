@@ -16,8 +16,8 @@ public class BabyScoreStrategy implements ScoreStrategy {
         double score = Constants.BABY_SCORE;
         score += score * child.getNiceScoreBonus() / Constants.HUNDRED;
 
-        if (score > 10) {
-            score = 10;
+        if (score > Constants.CHECKSTYLE_POINTS) {
+            score = Constants.CHECKSTYLE_POINTS;
         }
 
         child.setAverageScore(score);

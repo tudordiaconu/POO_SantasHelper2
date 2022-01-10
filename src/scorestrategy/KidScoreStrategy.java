@@ -22,8 +22,8 @@ public class KidScoreStrategy implements ScoreStrategy {
         score = score / child.getNiceScoreHistory().size();
         score += score * child.getNiceScoreBonus() / Constants.HUNDRED;
 
-        if (score > 10) {
-            score = 10;
+        if (score > Constants.CHECKSTYLE_POINTS) {
+            score = Constants.CHECKSTYLE_POINTS;
         }
 
         child.setAverageScore(score);

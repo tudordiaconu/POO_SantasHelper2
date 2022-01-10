@@ -12,7 +12,10 @@ import michelaneous.Gift;
 import scorestrategy.ScoreStrategy;
 import scorestrategy.ScoreStrategyFactory;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+import java.util.Objects;
 
 public final class Simulation {
     private Simulation() {
@@ -42,7 +45,7 @@ public final class Simulation {
         }
 
         switch (strategy) {
-            case default -> {
+            case ID -> {
                 children = database.getChildren().stream()
                         .sorted(Comparator.comparingInt(Child::getId)).toList();
             }
