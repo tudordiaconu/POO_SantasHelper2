@@ -13,27 +13,36 @@ public class GiftWriter {
         this.category = category;
     }
 
+    /** getter for the product name */
     public String getProductName() {
         return productName;
     }
 
-    public void setProductName(String productName) {
+
+    /** setter for the product name */
+    public void setProductName(final String productName) {
         this.productName = productName;
     }
 
+
+    /** getter for the price */
     public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Double price) {
+
+    /** setter for the price */
+    public void setPrice(final Double price) {
         this.price = price;
     }
 
+    /** getter for the category */
     public Category getCategory() {
         return category;
     }
 
-    public void setCategory(Category category) {
+    /** setter for the category */
+    public void setCategory(final Category category) {
         this.category = category;
     }
 }

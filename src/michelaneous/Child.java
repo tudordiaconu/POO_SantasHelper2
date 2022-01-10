@@ -1,5 +1,6 @@
 package michelaneous;
 
+import common.Constants;
 import data.Database;
 import enums.Category;
 import enums.ElvesType;
@@ -45,27 +46,33 @@ public class Child {
         this.elf = null;
     }
 
+    /** getter for the received gifts used for writing */
     public ArrayList<GiftWriter> getWriterReceivedGifts() {
         return writerReceivedGifts;
     }
 
-    public void setWriterReceivedGifts(ArrayList<GiftWriter> writerReceivedGifts) {
+    /** setter for the received gifts used for writing */
+    public void setWriterReceivedGifts(final ArrayList<GiftWriter> writerReceivedGifts) {
         this.writerReceivedGifts = writerReceivedGifts;
     }
 
+    /** getter for the nice score bonus */
     public Double getNiceScoreBonus() {
         return niceScoreBonus;
     }
 
-    public void setNiceScoreBonus(Double niceScoreBonus) {
+    /** setter for the nice score bonus */
+    public void setNiceScoreBonus(final Double niceScoreBonus) {
         this.niceScoreBonus = niceScoreBonus;
     }
 
+    /** getter for the elf */
     public ElvesType getElf() {
         return elf;
     }
 
-    public void setElf(ElvesType elf) {
+    /** setter for the elf */
+    public void setElf(final ElvesType elf) {
         this.elf = elf;
     }
 
@@ -237,6 +244,7 @@ public class Child {
         }
     }
 
+    /** calculates the budget */
     public void calculateBudget(final Database database) {
         List<Child> sortedChildren = database.getChildren().stream()
                 .sorted(Comparator.comparingInt(Child::getId)).toList();
@@ -252,19 +260,25 @@ public class Child {
         switch (this.elf) {
             case BLACK -> {
                 Double budget = this.getAssignedBudget();
-                budget -= budget * 30 / 100;
+                budget -= budget * Constants.THIRTY / Constants.HUNDRED;
                 this.setAssignedBudget(budget);
             }
 
             case PINK -> {
                 Double budget = this.getAssignedBudget();
-                budget += budget * 30 / 100;
+                budget += budget * Constants.THIRTY / Constants.HUNDRED;
+                this.setAssignedBudget(budget);
+            }
+
+            default -> {
+                Double budget = this.getAssignedBudget();
                 this.setAssignedBudget(budget);
             }
         }
     }
 
-    public void yellowElf(final List <Gift> sortedGifts) {
+    /** function that implements the things that the yellow elf does */
+    public void yellowElf(final List<Gift> sortedGifts) {
         if (this.receivedGifts.size() == 0) {
             Category favouriteCategory = this.giftsPreferences.get(0);
             for (Gift gift : sortedGifts) {

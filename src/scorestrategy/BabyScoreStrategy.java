@@ -1,4 +1,4 @@
-package scoreStrategy;
+package scorestrategy;
 
 import common.Constants;
 import michelaneous.Child;
@@ -14,7 +14,7 @@ public class BabyScoreStrategy implements ScoreStrategy {
     @Override
     public void getScore() {
         double score = Constants.BABY_SCORE;
-        score += score * child.getNiceScoreBonus() / 100;
+        score += score * child.getNiceScoreBonus() / Constants.HUNDRED;
         child.setAverageScore(score);
     }
 }

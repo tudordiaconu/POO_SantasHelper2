@@ -1,4 +1,4 @@
-package scoreStrategy;
+package scorestrategy;
 
 import michelaneous.Child;
 

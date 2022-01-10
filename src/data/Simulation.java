@@ -7,8 +7,8 @@ import michelaneous.Child;
 import michelaneous.ChildWriter;
 import michelaneous.ChildWriterList;
 import michelaneous.Gift;
-import scoreStrategy.ScoreStrategy;
-import scoreStrategy.ScoreStrategyFactory;
+import scorestrategy.ScoreStrategy;
+import scorestrategy.ScoreStrategyFactory;
 
 import java.util.ArrayList;
 import java.util.Comparator;

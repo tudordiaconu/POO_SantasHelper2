@@ -1,5 +1,6 @@
-package scoreStrategy;
+package scorestrategy;
 
+import common.Constants;
 import michelaneous.Child;
 
 public class KidScoreStrategy implements ScoreStrategy {
@@ -19,7 +20,7 @@ public class KidScoreStrategy implements ScoreStrategy {
         }
 
         score = score / child.getNiceScoreHistory().size();
-        score += score * child.getNiceScoreBonus() / 100;
+        score += score * child.getNiceScoreBonus() / Constants.HUNDRED;
 
         child.setAverageScore(score);
     }

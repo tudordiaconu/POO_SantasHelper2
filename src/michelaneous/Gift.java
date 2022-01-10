@@ -15,11 +15,15 @@ public class Gift {
         this.quantity = 0;
     }
 
+
+    /** getter for the quantity */
     public Integer getQuantity() {
         return quantity;
     }
 
-    public void setQuantity(Integer quantity) {
+
+    /** setter for the quantity */
+    public void setQuantity(final Integer quantity) {
         this.quantity = quantity;
     }
 
