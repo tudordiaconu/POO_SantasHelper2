@@ -24,7 +24,7 @@ public final class Main {
      *          the arguments used to call the main method
      */
     public static void main(final String[] args) throws IOException {
-        for (int i = 13; i <= Constants.TESTS_NUMBER; i++) {
+        for (int i = 28; i <= Constants.TESTS_NUMBER; i++) {
             ReadWrite readWrite = new ReadWrite(Database.getInstance(), new WriteDatabase());
             String inputName = Constants.INPUT_PATH + i + Constants.FILE_EXTENSION;
             String outputName = Constants.OUTPUT_PATH + i + Constants.FILE_EXTENSION;

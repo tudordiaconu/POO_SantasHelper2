@@ -24,6 +24,10 @@ public class TeenScoreStrategy implements ScoreStrategy {
         score = score / sum;
         score += score * child.getNiceScoreBonus() / Constants.HUNDRED;
 
+        if (score > 10) {
+            score = 10;
+        }
+
         child.setAverageScore(score);
     }
 }

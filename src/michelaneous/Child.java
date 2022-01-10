@@ -26,6 +26,7 @@ public class Child {
     private ArrayList<GiftWriter> writerReceivedGifts;
     private Double niceScoreBonus;
     private ElvesType elf;
+    private Double niceScoreCity;
 
     public Child() {
         this.id = -1;
@@ -44,6 +45,15 @@ public class Child {
         this.writerReceivedGifts = new ArrayList<>();
         this.niceScoreBonus = (double) 0;
         this.elf = null;
+        this.niceScoreCity = (double) 0;
+    }
+
+    public Double getNiceScoreCity() {
+        return niceScoreCity;
+    }
+
+    public void setNiceScoreCity(Double niceScoreCity) {
+        this.niceScoreCity = niceScoreCity;
     }
 
     /** getter for the received gifts used for writing */
@@ -282,11 +292,17 @@ public class Child {
         if (this.receivedGifts.size() == 0) {
             Category favouriteCategory = this.giftsPreferences.get(0);
             for (Gift gift : sortedGifts) {
-                if (gift.getCategory() == favouriteCategory) {
+                if (gift.getCategory() == favouriteCategory && this.receivedGifts.size() == 0) {
                     if (gift.getQuantity() > 0) {
                         this.receivedGifts.add(gift);
                         this.receivedCategories.add(favouriteCategory);
+                        this.writerReceivedGifts.add(new GiftWriter(gift.getProductName(),
+                                gift.getPrice(), gift.getCategory()));
                         gift.setQuantity(gift.getQuantity() - 1);
+                    }
+
+                    else {
+                        break;
                     }
                 }
             }

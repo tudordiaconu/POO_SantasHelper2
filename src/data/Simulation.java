@@ -1,6 +1,7 @@
 package data;
 
 import common.Constants;
+import enums.Category;
 import enums.CityStrategyEnum;
 import enums.ElvesType;
 import michelaneous.AnnualChange;
@@ -11,10 +12,7 @@ import michelaneous.Gift;
 import scorestrategy.ScoreStrategy;
 import scorestrategy.ScoreStrategyFactory;
 
-import java.util.ArrayList;
-import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 public final class Simulation {
     private Simulation() {
@@ -34,6 +32,15 @@ public final class Simulation {
 
         List<Child> children = new ArrayList<>();
 
+        /* calculates the average score for each child, based on its age */
+        for (Child child : database.getChildren()) {
+            ScoreStrategy scoreStrategy = ScoreStrategyFactory.createStrategy(child);
+
+            if (scoreStrategy != null) {
+                scoreStrategy.getScore();
+            }
+        }
+
         switch (strategy) {
             case default -> {
                 children = database.getChildren().stream()
@@ -43,26 +50,34 @@ public final class Simulation {
             case NICE_SCORE -> {
                 children = database.getChildren().stream()
                         .sorted((c1, c2) -> {
-                            if (Objects.equals(c1.getNiceScore(), c2.getNiceScore())) {
+                            if (Objects.equals(c1.getAverageScore(), c2.getAverageScore())) {
                                 return c1.getId() - c2.getId();
                             }
 
-                            return Double.compare(c2.getNiceScore(), c1.getNiceScore());
+                            return Double.compare(c2.getAverageScore(), c1.getAverageScore());
                         }).toList();
             }
 
             case NICE_SCORE_CITY -> {
-                children = database.getChildren().stream()
-                        .sorted(Comparator.comparingInt(Child::getId)).toList();
-            }
-        }
+                database.calculateCityScore();
+                List<String> sortedCities = database.getCitiesScore().keySet().stream()
+                        .sorted((c1, c2) -> {
+                            Double value1 = database.getCitiesScore().get(c1);
+                            Double value2 = database.getCitiesScore().get(c2);
 
-        /* calculates the average score for each child, based on its age */
-        for (Child child : database.getChildren()) {
-            ScoreStrategy scoreStrategy = ScoreStrategyFactory.createStrategy(child);
-
-            if (scoreStrategy != null) {
-                scoreStrategy.getScore();
+                            if (Objects.equals(value1, value2)) {
+                                return c1.compareTo(c2);
+                            } else {
+                                return Double.compare(value2, value1);
+                            }
+                        }).toList();
+                for (String city : sortedCities) {
+                    for (Child child : database.getChildren()) {
+                        if (Objects.equals(child.getCity(), city)) {
+                            children.add(child);
+                        }
+                    }
+                }
             }
         }
 
@@ -76,9 +91,17 @@ public final class Simulation {
 
         for (Child child : database.getChildren()) {
             /* creates a new childwriter in order to print the child */
+            ArrayList<Category> uniqueGiftsPreferences = new ArrayList<>();
+
+            for (Category category : child.getGiftsPreferences()) {
+                if (!uniqueGiftsPreferences.contains(category)) {
+                    uniqueGiftsPreferences.add(category);
+                }
+            }
+
             auxiliarList.getChildren().add(new ChildWriter(child.getId(), child.getLastName(),
                     child.getFirstName(), child.getCity(), child.getAge(),
-                    child.getGiftsPreferences(), child.getAverageScore(),
+                    uniqueGiftsPreferences, child.getAverageScore(),
                     child.getNiceScoreHistory(), child.getAssignedBudget(),
                     child.getWriterReceivedGifts()));
         }
@@ -92,6 +115,7 @@ public final class Simulation {
         /* sets the children list and the gift list to the database*/
         database.setChildren(database.getInitialData().getChildren());
         database.setGifts(database.getInitialData().getSantaGiftsList());
+
 
         /* removes the young adults */
         database.getChildren().removeIf(child -> (child.getAge() > Constants.TEEN_MAX));
