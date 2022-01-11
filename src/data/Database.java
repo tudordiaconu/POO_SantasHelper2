@@ -7,6 +7,7 @@ import michelaneous.Gift;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
 public final class Database {
     private Integer numberOfYears;
@@ -15,6 +16,8 @@ public final class Database {
     private ArrayList<Child> children;
     private ArrayList<Gift> gifts;
     private HashMap<String, ArrayList<Double>> citiesScores;
+    private List<Child> sortedChildren;
+    private List<Gift> sortedGifts;
 
     public void setCitiesScores(final HashMap<String, ArrayList<Double>> citiesScores) {
         this.citiesScores = citiesScores;
@@ -159,6 +162,21 @@ public final class Database {
         return annualChanges;
     }
 
+    public List<Child> getSortedChildren() {
+        return sortedChildren;
+    }
+
+    public void setSortedChildren(final List<Child> sortedChildren) {
+        this.sortedChildren = sortedChildren;
+    }
+
+    public List<Gift> getSortedGifts() {
+        return sortedGifts;
+    }
+
+    public void setSortedGifts(final List<Gift> sortedGifts) {
+        this.sortedGifts = sortedGifts;
+    }
 
     /** getter for the list of annual changes */
     public void setAnnualChanges(final ArrayList<AnnualChange> annualChanges) {

@@ -1,5 +1,6 @@
 package data;
 
+import client.Client;
 import common.Constants;
 import enums.Category;
 import enums.CityStrategyEnum;
@@ -10,12 +11,12 @@ import michelaneous.ChildWriter;
 import michelaneous.ChildWriterList;
 import michelaneous.Gift;
 import scorestrategy.ScoreStrategy;
-import scorestrategy.ScoreStrategyFactory;
+import factories.ScoreStrategyFactory;
+import sortingstrategy.SortStrategy;
+import factories.SortStrategyFactory;
 
 import java.util.ArrayList;
 import java.util.Comparator;
-import java.util.List;
-import java.util.Objects;
 
 public final class Simulation {
     private Simulation() {
@@ -28,12 +29,11 @@ public final class Simulation {
         ChildWriterList auxiliarList = new ChildWriterList();
 
         /* sorts the gifts by the price in order to get the cheapest one */
-        List<Gift> sortedGifts = database.getGifts().stream()
-                .sorted(Comparator.comparingDouble(Gift::getPrice)).toList();
+        database.setSortedGifts(database.getGifts().stream()
+                .sorted(Comparator.comparingDouble(Gift::getPrice)).toList());
 
         database.setAgeCategories();
-
-        List<Child> children = new ArrayList<>();
+        database.setSortedChildren(new ArrayList<>());
 
         /* calculates the average score for each child, based on its age */
         for (Child child : database.getChildren()) {
@@ -44,51 +44,29 @@ public final class Simulation {
             }
         }
 
-        switch (strategy) {
-            case ID -> {
-                children = database.getChildren().stream()
-                        .sorted(Comparator.comparingInt(Child::getId)).toList();
-            }
-
-            case NICE_SCORE -> {
-                children = database.getChildren().stream()
-                        .sorted((c1, c2) -> {
-                            if (Objects.equals(c1.getAverageScore(), c2.getAverageScore())) {
-                                return c1.getId() - c2.getId();
-                            }
-
-                            return Double.compare(c2.getAverageScore(), c1.getAverageScore());
-                        }).toList();
-            }
-
-            case NICE_SCORE_CITY -> {
-                database.calculateCityScore();
-                List<String> sortedCities = database.getCitiesScore().keySet().stream()
-                        .sorted((c1, c2) -> {
-                            Double value1 = database.getCitiesScore().get(c1);
-                            Double value2 = database.getCitiesScore().get(c2);
-
-                            if (Objects.equals(value1, value2)) {
-                                return c1.compareTo(c2);
-                            } else {
-                                return Double.compare(value2, value1);
-                            }
-                        }).toList();
-                for (String city : sortedCities) {
-                    for (Child child : database.getChildren()) {
-                        if (Objects.equals(child.getCity(), city)) {
-                            children.add(child);
-                        }
-                    }
-                }
-            }
+        SortStrategy sortStrategy = SortStrategyFactory.createStrategy(strategy, database);
+        if (sortStrategy != null) {
+            sortStrategy.sortChildren();
         }
 
-        for (Child child : children) {
+        for (Child child : database.getSortedChildren()) {
+            Client client = new Client(child, database);
             child.calculateBudget(database);
-            child.receiveGift(sortedGifts);
+
+            switch (child.getElf()) {
+                case BLACK -> client.executeAction("black elf", child, database);
+
+                case PINK -> client.executeAction("pink elf", child, database);
+
+                default -> {
+                    Double budget = child.getAssignedBudget();
+                    child.setAssignedBudget(budget);
+                }
+            }
+
+            child.receiveGift(database.getSortedGifts());
             if (child.getElf() == ElvesType.YELLOW) {
-                child.yellowElf(sortedGifts);
+                client.executeAction("yellow elf", child, database);
             }
         }
 

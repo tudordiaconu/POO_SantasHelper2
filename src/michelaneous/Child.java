@@ -1,6 +1,5 @@
 package michelaneous;
 
-import common.Constants;
 import data.Database;
 import enums.Category;
 import enums.ElvesType;
@@ -256,44 +255,5 @@ public class Child {
 
         double budgetUnit = database.getSantaBudget() / allAverage;
         this.setAssignedBudget(this.getAverageScore() * budgetUnit);
-
-        switch (this.elf) {
-            case BLACK -> {
-                Double budget = this.getAssignedBudget();
-                budget -= budget * Constants.THIRTY / Constants.HUNDRED;
-                this.setAssignedBudget(budget);
-            }
-
-            case PINK -> {
-                Double budget = this.getAssignedBudget();
-                budget += budget * Constants.THIRTY / Constants.HUNDRED;
-                this.setAssignedBudget(budget);
-            }
-
-            default -> {
-                Double budget = this.getAssignedBudget();
-                this.setAssignedBudget(budget);
-            }
-        }
-    }
-
-    /** function that implements the things that the yellow elf does */
-    public void yellowElf(final List<Gift> sortedGifts) {
-        if (this.receivedGifts.size() == 0) {
-            Category favouriteCategory = this.giftsPreferences.get(0);
-            for (Gift gift : sortedGifts) {
-                if (gift.getCategory() == favouriteCategory && this.receivedGifts.size() == 0) {
-                    if (gift.getQuantity() > 0) {
-                        this.receivedGifts.add(gift);
-                        this.receivedCategories.add(favouriteCategory);
-                        this.writerReceivedGifts.add(new GiftWriter(gift.getProductName(),
-                                gift.getPrice(), gift.getCategory()));
-                        gift.setQuantity(gift.getQuantity() - 1);
-                    } else {
-                        break;
-                    }
-                }
-            }
-        }
     }
 }
