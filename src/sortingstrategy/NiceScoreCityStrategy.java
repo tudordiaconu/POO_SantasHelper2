@@ -6,17 +6,19 @@ import michelaneous.Child;
 import java.util.List;
 import java.util.Objects;
 
-public class NiceScoreCityStrategy implements SortStrategy{
+public class NiceScoreCityStrategy implements SortStrategy {
     private final Database database;
 
     public NiceScoreCityStrategy(final Database database) {
         this.database = database;
     }
 
+    /** getter for the database */
     public Database getDatabase() {
         return database;
     }
 
+    /** sorts the children by their city's nice score */
     @Override
     public void sortChildren() {
         database.calculateCityScore();

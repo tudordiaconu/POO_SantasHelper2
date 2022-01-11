@@ -4,17 +4,19 @@ import data.Database;
 
 import java.util.Objects;
 
-public class NiceScoreStrategy implements SortStrategy{
+public class NiceScoreStrategy implements SortStrategy {
     private final Database database;
 
     public NiceScoreStrategy(final Database database) {
         this.database = database;
     }
 
+    /** getter for the database */
     public Database getDatabase() {
         return database;
     }
 
+    /** sorts the children by their average score */
     @Override
     public void sortChildren() {
         database.setSortedChildren(database.getChildren().stream()

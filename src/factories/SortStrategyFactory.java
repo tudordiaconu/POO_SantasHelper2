@@ -12,8 +12,9 @@ public final class SortStrategyFactory {
         // constructor for checkstyle
     }
 
-    public static SortStrategy createStrategy(CityStrategyEnum strategy,
-                                              Database database) {
+    /** factory method to create a strategy for sorting */
+    public static SortStrategy createStrategy(final CityStrategyEnum strategy,
+                                              final Database database) {
         switch (strategy) {
             case ID -> {
                 return new IdStrategy(database);
