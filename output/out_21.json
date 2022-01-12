@@ -40,7 +40,7 @@
       "city" : "Cluj-Napoca",
       "age" : 2,
       "giftsPreferences" : [ "Sweets", "Clothes", "Technology" ],
-      "averageScore" : 18.0,
+      "averageScore" : 10.0,
       "niceScoreHistory" : [ 4.0 ],
       "assignedBudget" : 934.0,
       "receivedGifts" : [ {

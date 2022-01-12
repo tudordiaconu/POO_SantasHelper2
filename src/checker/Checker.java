@@ -2,11 +2,16 @@ package checker;
 
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import common.Constants;
 
 import java.io.File;
 import java.io.IOException;
 
-public class Checker {
+public final class Checker {
+
+    private Checker() {
+        // constructor for checkstyle
+    }
 
     /**
      * This method is used to calculate total score of the implementation and checkstyle
@@ -32,7 +37,7 @@ public class Checker {
      */
     private static void calculateScoreAllTests() {
         int totalScore = 0;
-        for (int i = 1; i <= 30; i++) {
+        for (int i = 1; i <= Constants.TESTS_NUMBER; i++) {
             totalScore += calculateScore(i);
         }
         System.out.println("-----------------------------------------------------");
@@ -47,15 +52,17 @@ public class Checker {
      * @param testNumber
      *          the testNumber you want to calculate score for
      * @return
-     *          the score of that test (1 for tests : 1 -12 ) (2 for tests : 13 - 19) (3 for tests : 20 - 29) (4 for test : 30)
+     *          the score of that test (1 for tests : 1 -12 ) (2 for tests : 13 - 19)
+     *          (3 for tests : 20 - 29) (4 for test : 30)
      */
-    public static int calculateScore(Integer testNumber) {
+    public static int calculateScore(final Integer testNumber) {
         if (checkOutput(testNumber)) {
-            System.out.println("test" + testNumber + ".json ----------------------------- PASSED (+" + getScoreForTest(testNumber) + ")");
+            System.out.println("test" + testNumber + ".json ----------------------------- PASSED (+"
+                    + getScoreForTest(testNumber) + ")");
             return getScoreForTest(testNumber);
-        }
-        else {
-            System.out.println("test" + testNumber + ".json  ----------------------------- FAILED (+0)");
+        } else {
+            System.out.println("test" + testNumber
+                    + ".json  ----------------------------- FAILED (+0)");
             return 0;
         }
     }
@@ -68,7 +75,7 @@ public class Checker {
      * @return
      *          if the two files are equal or not
      */
-    private static boolean checkOutput(Integer testNumber) {
+    private static boolean checkOutput(final Integer testNumber) {
         ObjectMapper mapper = new ObjectMapper();
 
         try {
@@ -88,18 +95,19 @@ public class Checker {
      * @param testNumber
      *      the testNumber you want to calculate score for
      * @return
-     *      the score of that test (1 for tests : 1 -12 ) (2 for tests : 13 - 19) (3 for tests : 20 - 29) (4 for test : 30)
+     *      the score of that test (1 for tests : 1 -12 ) (2 for tests : 13 - 19)
+     *      (3 for tests : 20 - 29) (4 for test : 30)
      */
-    private static int getScoreForTest(Integer testNumber) {
-        if (testNumber >=1 && testNumber <= 12) {
+    private static int getScoreForTest(final Integer testNumber) {
+        if (testNumber >= 1 && testNumber <= Constants.KID_MAX) {
             return 1;
         }
-        if (testNumber >=13 && testNumber <= 19) {
+        if (testNumber >= Constants.KID_MAX + 1 && testNumber <= Constants.TEEN_MAX + 1) {
             return 2;
         }
-        if (testNumber >=20 && testNumber <= 29) {
-            return 3;
+        if (testNumber >= Constants.TEEN_MAX + 2 && testNumber <= Constants.TESTS_NUMBER - 1) {
+            return Constants.THREE_POINTS;
         }
-        return 4;
+        return Constants.FOUR_POINTS;
     }
 }

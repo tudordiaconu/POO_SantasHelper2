@@ -18,11 +18,13 @@ public class ChildUpdate {
         this.elf = null;
     }
 
+    /** getter for the elf */
     public ElvesType getElf() {
         return elf;
     }
 
-    public void setElf(ElvesType elf) {
+    /** setter for the elf */
+    public void setElf(final ElvesType elf) {
         this.elf = elf;
     }
 

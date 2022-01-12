@@ -23,15 +23,18 @@ public class AnnualChange {
         this.strategy = null;
     }
 
-    public void setChildrenUpdates(ArrayList<ChildUpdate> childrenUpdates) {
+    /** setter for the children updates */
+    public void setChildrenUpdates(final ArrayList<ChildUpdate> childrenUpdates) {
         this.childrenUpdates = childrenUpdates;
     }
 
+    /** getter for the strategy */
     public CityStrategyEnum getStrategy() {
         return strategy;
     }
 
-    public void setStrategy(CityStrategyEnum strategy) {
+    /** setter for the strategy */
+    public void setStrategy(final CityStrategyEnum strategy) {
         this.strategy = strategy;
     }
 

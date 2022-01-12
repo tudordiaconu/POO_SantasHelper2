@@ -26,6 +26,80 @@ public class Child {
     private Double niceScoreBonus;
     private ElvesType elf;
 
+    /** builder pattern attempt (most probably a fail) */
+    public static class Builder {
+        private Integer id;
+        private String lastName;
+        private String firstName;
+        private Integer age;
+        private String city;
+        private Double niceScore;
+        private ArrayList<Category> giftsPreferences;
+        private Double averageScore;
+        private String ageCategory;
+        private ArrayList<Double> niceScoreHistory;
+        private Double assignedBudget;
+        private ArrayList<Gift> receivedGifts;
+        private ArrayList<Category> receivedCategories;
+        private ArrayList<GiftWriter> writerReceivedGifts;
+        private Double niceScoreBonus;
+        private ElvesType elf;
+
+        public Builder(final Integer id, final String lastName, final String firstName,
+                       final Integer age, final String city, final Double niceScore,
+                       final ArrayList<Category> giftsPreferences, final Double averageScore,
+                       final String ageCategory, final ArrayList<Double> niceScoreHistory,
+                       final Double assignedBudget, final ArrayList<Gift> receivedGifts,
+                       final ArrayList<Category> receivedCategories,
+                       final ArrayList<GiftWriter> writerReceivedGifts, final ElvesType elf) {
+            this.id = id;
+            this.lastName = lastName;
+            this.firstName = firstName;
+            this.age = age;
+            this.city = city;
+            this.niceScore = niceScore;
+            this.giftsPreferences = giftsPreferences;
+            this.averageScore = averageScore;
+            this.ageCategory = ageCategory;
+            this.niceScoreHistory = niceScoreHistory;
+            this.assignedBudget = assignedBudget;
+            this.receivedGifts = receivedGifts;
+            this.receivedCategories = receivedCategories;
+            this.writerReceivedGifts = writerReceivedGifts;
+            this.elf = elf;
+        }
+
+        /** builder pattern attempt for nice score bonus (most probably a fail) */
+        public Builder niceScoreBonus(final Double bonus) {
+            this.niceScoreBonus = bonus;
+            return this;
+        }
+
+        /** builder pattern build method attempt (most probably a fail) */
+        public Child build() {
+            return new Child(this);
+        }
+    }
+
+    private Child(final Builder builder) {
+        this.id = builder.id;
+        this.lastName = builder.lastName;
+        this.firstName = builder.firstName;
+        this.age = builder.age;
+        this.city = builder.city;
+        this.niceScore = builder.niceScore;
+        this.giftsPreferences = builder.giftsPreferences;
+        this.averageScore = builder.averageScore;
+        this.ageCategory = builder.ageCategory;
+        this.niceScoreHistory = builder.niceScoreHistory;
+        this.assignedBudget = builder.assignedBudget;
+        this.receivedGifts = builder.receivedGifts;
+        this.receivedCategories = builder.receivedCategories;
+        this.writerReceivedGifts = builder.writerReceivedGifts;
+        this.niceScoreBonus = builder.niceScoreBonus;
+        this.elf = builder.elf;
+    }
+
     public Child() {
         this.id = -1;
         this.lastName = null;
@@ -45,27 +119,33 @@ public class Child {
         this.elf = null;
     }
 
+    /** getter for the received gifts used for writing */
     public ArrayList<GiftWriter> getWriterReceivedGifts() {
         return writerReceivedGifts;
     }
 
-    public void setWriterReceivedGifts(ArrayList<GiftWriter> writerReceivedGifts) {
+    /** setter for the received gifts used for writing */
+    public void setWriterReceivedGifts(final ArrayList<GiftWriter> writerReceivedGifts) {
         this.writerReceivedGifts = writerReceivedGifts;
     }
 
+    /** getter for the nice score bonus */
     public Double getNiceScoreBonus() {
         return niceScoreBonus;
     }
 
-    public void setNiceScoreBonus(Double niceScoreBonus) {
+    /** setter for the nice score bonus */
+    public void setNiceScoreBonus(final Double niceScoreBonus) {
         this.niceScoreBonus = niceScoreBonus;
     }
 
+    /** getter for the elf */
     public ElvesType getElf() {
         return elf;
     }
 
-    public void setElf(ElvesType elf) {
+    /** setter for the elf */
+    public void setElf(final ElvesType elf) {
         this.elf = elf;
     }
 
@@ -237,6 +317,7 @@ public class Child {
         }
     }
 
+    /** calculates the budget */
     public void calculateBudget(final Database database) {
         List<Child> sortedChildren = database.getChildren().stream()
                 .sorted(Comparator.comparingInt(Child::getId)).toList();
@@ -248,34 +329,5 @@ public class Child {
 
         double budgetUnit = database.getSantaBudget() / allAverage;
         this.setAssignedBudget(this.getAverageScore() * budgetUnit);
-
-        switch (this.elf) {
-            case BLACK -> {
-                Double budget = this.getAssignedBudget();
-                budget -= budget * 30 / 100;
-                this.setAssignedBudget(budget);
-            }
-
-            case PINK -> {
-                Double budget = this.getAssignedBudget();
-                budget += budget * 30 / 100;
-                this.setAssignedBudget(budget);
-            }
-        }
-    }
-
-    public void yellowElf(final List <Gift> sortedGifts) {
-        if (this.receivedGifts.size() == 0) {
-            Category favouriteCategory = this.giftsPreferences.get(0);
-            for (Gift gift : sortedGifts) {
-                if (gift.getCategory() == favouriteCategory) {
-                    if (gift.getQuantity() > 0) {
-                        this.receivedGifts.add(gift);
-                        this.receivedCategories.add(favouriteCategory);
-                        gift.setQuantity(gift.getQuantity() - 1);
-                    }
-                }
-            }
-        }
     }
 }
