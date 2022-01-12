@@ -25,7 +25,7 @@ public class YellowElf implements ElfCommand {
             // goes through the list of sorted gifts
             for (Gift gift : database.getSortedGifts()) {
 
-                // if the child is elligible to be helped by the yellow elf
+                // if the child is eligible to be helped by the yellow elf
                 if (gift.getCategory() == favouriteCategory
                         && child.getReceivedGifts().size() == 0) {
 

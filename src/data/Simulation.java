@@ -74,7 +74,7 @@ public final class Simulation {
             // enables the child to receive his gifts
             child.receiveGift(database.getSortedGifts());
 
-            // if the child is elligible to be helped by the yellow elf, he is helped
+            // if the child is eligible to be helped by the yellow elf, he is helped
             if (child.getElf() == ElvesType.YELLOW) {
                 client.executeAction("yellow elf", child, database);
             }
