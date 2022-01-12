@@ -22,6 +22,8 @@ public class Client {
     /** executes an action given as a parameter */
     public void executeAction(final String commandName, final Child kid, final Database data) {
         ElfCommand command;
+
+        // converts a string to a command
         try {
             CommandType commandType = CommandType.fromString(commandName);
             command = getCommand(commandType, kid, data);
@@ -38,6 +40,7 @@ public class Client {
             return;
         }
 
+        // passes the command to the invoker to be executed
         invoker.execute(command);
     }
 

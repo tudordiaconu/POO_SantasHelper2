@@ -26,6 +26,80 @@ public class Child {
     private Double niceScoreBonus;
     private ElvesType elf;
 
+    /** builder pattern attempt (most probably a fail) */
+    public static class Builder {
+        private Integer id;
+        private String lastName;
+        private String firstName;
+        private Integer age;
+        private String city;
+        private Double niceScore;
+        private ArrayList<Category> giftsPreferences;
+        private Double averageScore;
+        private String ageCategory;
+        private ArrayList<Double> niceScoreHistory;
+        private Double assignedBudget;
+        private ArrayList<Gift> receivedGifts;
+        private ArrayList<Category> receivedCategories;
+        private ArrayList<GiftWriter> writerReceivedGifts;
+        private Double niceScoreBonus;
+        private ElvesType elf;
+
+        public Builder(final Integer id, final String lastName, final String firstName,
+                       final Integer age, final String city, final Double niceScore,
+                       final ArrayList<Category> giftsPreferences, final Double averageScore,
+                       final String ageCategory, final ArrayList<Double> niceScoreHistory,
+                       final Double assignedBudget, final ArrayList<Gift> receivedGifts,
+                       final ArrayList<Category> receivedCategories,
+                       final ArrayList<GiftWriter> writerReceivedGifts, final ElvesType elf) {
+            this.id = id;
+            this.lastName = lastName;
+            this.firstName = firstName;
+            this.age = age;
+            this.city = city;
+            this.niceScore = niceScore;
+            this.giftsPreferences = giftsPreferences;
+            this.averageScore = averageScore;
+            this.ageCategory = ageCategory;
+            this.niceScoreHistory = niceScoreHistory;
+            this.assignedBudget = assignedBudget;
+            this.receivedGifts = receivedGifts;
+            this.receivedCategories = receivedCategories;
+            this.writerReceivedGifts = writerReceivedGifts;
+            this.elf = elf;
+        }
+
+        /** builder pattern attempt for nice score bonus (most probably a fail) */
+        public Builder niceScoreBonus(final Double bonus) {
+            this.niceScoreBonus = bonus;
+            return this;
+        }
+
+        /** builder pattern build method attempt (most probably a fail) */
+        public Child build() {
+            return new Child(this);
+        }
+    }
+
+    private Child(final Builder builder) {
+        this.id = builder.id;
+        this.lastName = builder.lastName;
+        this.firstName = builder.firstName;
+        this.age = builder.age;
+        this.city = builder.city;
+        this.niceScore = builder.niceScore;
+        this.giftsPreferences = builder.giftsPreferences;
+        this.averageScore = builder.averageScore;
+        this.ageCategory = builder.ageCategory;
+        this.niceScoreHistory = builder.niceScoreHistory;
+        this.assignedBudget = builder.assignedBudget;
+        this.receivedGifts = builder.receivedGifts;
+        this.receivedCategories = builder.receivedCategories;
+        this.writerReceivedGifts = builder.writerReceivedGifts;
+        this.niceScoreBonus = builder.niceScoreBonus;
+        this.elf = builder.elf;
+    }
+
     public Child() {
         this.id = -1;
         this.lastName = null;

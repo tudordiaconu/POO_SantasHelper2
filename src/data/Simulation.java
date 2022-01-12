@@ -44,15 +44,22 @@ public final class Simulation {
             }
         }
 
+        /* strategy pattern for sorting the list of children based on the strategy given
+        * in the input */
         SortStrategy sortStrategy = SortStrategyFactory.createStrategy(strategy, database);
         if (sortStrategy != null) {
             sortStrategy.sortChildren();
         }
 
+        // goes through the list of sorted children
         for (Child child : database.getSortedChildren()) {
+            // initialization of the client for the command pattern
             Client client = new Client(child, database);
+
+            // calculates the budget for each child
             child.calculateBudget(database);
 
+            // makes the changes on the budget, depending on the elf
             switch (child.getElf()) {
                 case BLACK -> client.executeAction("black elf", child, database);
 
@@ -64,22 +71,25 @@ public final class Simulation {
                 }
             }
 
+            // enables the child to receive his gifts
             child.receiveGift(database.getSortedGifts());
+
+            // if the child is elligible to be helped by the yellow elf, he is helped
             if (child.getElf() == ElvesType.YELLOW) {
                 client.executeAction("yellow elf", child, database);
             }
         }
 
         for (Child child : database.getChildren()) {
-            /* creates a new childwriter in order to print the child */
+            // creates a new arraylist of unique categories, used for printing
             ArrayList<Category> uniqueGiftsPreferences = new ArrayList<>();
-
             for (Category category : child.getGiftsPreferences()) {
                 if (!uniqueGiftsPreferences.contains(category)) {
                     uniqueGiftsPreferences.add(category);
                 }
             }
 
+            /* creates a new childwriter in order to print the child */
             auxiliarList.getChildren().add(new ChildWriter(child.getId(), child.getLastName(),
                     child.getFirstName(), child.getCity(), child.getAge(),
                     uniqueGiftsPreferences, child.getAverageScore(),

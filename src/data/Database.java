@@ -16,8 +16,10 @@ public final class Database {
     private ArrayList<Child> children;
     private ArrayList<Gift> gifts;
     private HashMap<String, ArrayList<Double>> citiesScores;
+    private HashMap<String, Double> citiesScore;
     private List<Child> sortedChildren;
     private List<Gift> sortedGifts;
+    private ArrayList<AnnualChange> annualChanges;
 
     public void setCitiesScores(final HashMap<String, ArrayList<Double>> citiesScores) {
         this.citiesScores = citiesScores;
@@ -30,9 +32,6 @@ public final class Database {
     public void setCitiesScore(final HashMap<String, Double> citiesScore) {
         this.citiesScore = citiesScore;
     }
-
-    private HashMap<String, Double> citiesScore;
-    private ArrayList<AnnualChange> annualChanges;
 
     private static Database instance = null;
 
@@ -132,10 +131,15 @@ public final class Database {
     public void populateCities() {
         this.setCities(new HashMap<>());
 
+        // goes through the list of children
         for (Child child : this.children) {
+            // if the city doesn't already exist in the hashmap, it is
+            // inserted with a new arraylist of doubles
             if (!this.citiesScores.containsKey(child.getCity())) {
                 this.citiesScores.put(child.getCity(), new ArrayList<>());
             }
+
+            // the score is added to the arraylist corresponding to the city
             this.citiesScores.get(child.getCity()).add(child.getAverageScore());
         }
     }
@@ -143,9 +147,14 @@ public final class Database {
     /** calculates the nice score for each city */
     public void calculateCityScore() {
         this.citiesScore = new HashMap<>();
+
+        // builds the hashmap with the arrays of scores for each city
         this.populateCities();
 
+        // goes through the list of cities
         for (String city : this.citiesScores.keySet()) {
+            // calculates the nice score for the current city and adds the pair
+            // (city, score) to another hashmap
             ArrayList<Double> scores = this.citiesScores.get(city);
             Double sum = (double) 0;
 
